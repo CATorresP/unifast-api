@@ -1,10 +1,23 @@
-from fastapi import APIRouter
+from typing import Annotated
 
-from main import app
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
-router = APIRouter()
+from com.pe.unifast.account.domain.repositories.AccountRepository import AccountRepository
+from com.pe.unifast.account.schemas.AccountResponseDto import AccountResponseDto
+from config.database import logger
+from dependencies import get_db_session
+
+account_router = APIRouter()
 
 
-@app.post("/account")
-async def login(form_data: str):
-    return {"myaccount": "SI"}
+@account_router.get("/account/")
+async def root(db: Annotated[Session, Depends(get_db_session)]):
+    account_repository = AccountRepository(db)
+    account = account_repository.find_by_id(3)
+    logger.info(f"{account.accountID}, {account.phoneNumber}")
+
+    if account is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    account_response_dto = AccountResponseDto.from_orm(account)
+    return account_response_dto
