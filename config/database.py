@@ -26,9 +26,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # Clase base declarativa de modelos
 Base = declarative_base()
 
-class ReprMixin:
-    def __repr__(self):
-        columns = self.__table__.columns.keys()
-        values = {column: getattr(self, column) for column in columns}
-        values_str = ', '.join(f"{column}={value!r}" for column, value in values.items())
-        return f"<{self.__class__.__name__}({values_str})>"
+#class ReprMixin:
+#    def __repr__(self):
+#        columns = self.__table__.columns.keys()
+#        values = {column: getattr(self, column) for column in columns}
+#        values_str = ', '.join(f"{column}={value!r}" for column, value in values.items())
+#        return f"<{self.__class__.__name__}({values_str})>"
