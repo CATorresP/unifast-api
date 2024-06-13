@@ -6,5 +6,4 @@ class TokenResponseDto(BaseModel):
     token_type: str
 
     class Config:
-        #orm_mode = True
         from_attributes = True

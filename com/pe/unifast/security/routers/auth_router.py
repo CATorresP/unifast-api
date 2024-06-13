@@ -9,13 +9,14 @@ from com.pe.unifast.security.schemas.TokenResponseDto import TokenResponseDto
 from dependencies import get_db_session
 
 auth_router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-
+@auth_router.get("/")
+async def root():
+    return {"message": "HELLO FROM AUTH"}
 @auth_router.post("/token/")
 async def login(
         form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
         db: Annotated[Session, Depends(get_db_session)]):
     auth_service = AuthService(db)
     token = auth_service.get_token(form_data.username, form_data.password)
-    return TokenResponseDto(access_token=token, token_type="bearer")
+    return token

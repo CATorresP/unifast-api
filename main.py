@@ -13,14 +13,9 @@ from dependencies import get_db_session
 
 app = FastAPI()
 
-# api_v1_router = APIRouter(prefix="/apiv1/")
-# api_v1_router.include_router(items_router)
-# api_v1_router.include_router(users_router)
-
-# app.include_router(api_v1_router)
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 app.include_router(auth_router, prefix="/auth")
-app.include_router(account_router, prefix="/account")
+#app.include_router(account_router, prefix="/account")
 
 @app.get("/")
 async def root():

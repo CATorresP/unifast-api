@@ -1,5 +1,9 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
 class TokenData(BaseModel):
-    name: str | None = None
+    accountID: int
+    name: str
+    exp: datetime
