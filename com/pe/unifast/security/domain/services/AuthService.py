@@ -1,7 +1,5 @@
 from fastapi import HTTPException, status
 from pydantic import ValidationError
-from sqlalchemy import select
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from com.pe.unifast.account.domain.entities.Account import Account
@@ -14,7 +12,6 @@ from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
 from datetime import datetime, timedelta, timezone
 
 from com.pe.unifast.security.schemas.TokenResponseDto import TokenResponseDto
-from config.database import SessionLocal
 
 
 class AuthService:
