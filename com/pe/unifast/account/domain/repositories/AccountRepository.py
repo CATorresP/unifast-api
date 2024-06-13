@@ -1,6 +1,7 @@
 from typing import Optional
 
 from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.orm import Session
 from com.pe.unifast.account.domain.entities.Account import Account
 
@@ -14,11 +15,12 @@ class AccountRepository:
 
     def find_active_by_phone_number(self, phone_number: str) -> Optional[Account]:
         stmt = select(Account).filter_by(phoneNumber=phone_number, accountStatus="ACTIVE")
-        account = self.db.execute(stmt).scalar_one()
-        if account:
-            return account
-        else:
+        try:
+            account = self.db.execute(stmt).scalar_one()
+        except NoResultFound:
             return None
+        #except MultipleResultsFound:
+        return account
 
     def save(self, account):
         self.db.add(account)

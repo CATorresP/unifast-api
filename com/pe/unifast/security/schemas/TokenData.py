@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class TokenDataDto(BaseModel):
+class TokenData(BaseModel):
     name: str | None = None

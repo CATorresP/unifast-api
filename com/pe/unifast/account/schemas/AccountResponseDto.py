@@ -22,5 +22,5 @@ class AccountResponseDto(BaseModel):
     # credit: CreditResponseDto
 
     class Config:
-        orm_mode = True
+        #orm_mode = True
         from_attributes = True
