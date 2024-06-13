@@ -19,7 +19,9 @@ from dependencies import get_db_session
 
 
 class AuthService:
+
     class HashManager:
+
         PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
         @classmethod
@@ -30,9 +32,13 @@ class AuthService:
         def verify_password(cls, plain_password, hashed_password):
             return cls.PWD_CONTEXT.verify(plain_password, hashed_password)
 
-    SECRET_KEY = "d908299fc78d30825316dcbb606107a5307a8c26b8e4e4db750f179c93c9a4ae"
-    ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+    class TokenManager:
+
+        SECRET_KEY = "d908299fc78d30825316dcbb606107a5307a8c26b8e4e4db750f179c93c9a4ae"
+        ALGORITHM = "HS256"
+        ACCESS_TOKEN_EXPIRE_MINUTES = 60
+        @classmethod
 
     def __init__(self, db: Session):
         self.account_repository = AccountRepository(db)
