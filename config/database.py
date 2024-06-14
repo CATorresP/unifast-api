@@ -10,11 +10,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Database URL
-SQLALCHEMY_DATABASE_URL = "mssql+pyodbc://sa:myBANKadmin#y4p3@localhost:1434/Unifast?driver=ODBC+Driver+17+for+SQL+Server"
+SQLALCHEMY_DATABASE_URL = "mssql+pyodbc://sa:myBANKadmin#y4p3@localhost:1433/Unifast?driver=ODBC+Driver+17+for+SQL+Server"
 
 try:
     # Crear motor con logging
     engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+    # Probar conexión
+    with engine.connect() as connection:
+        result = connection.execute(select(1))
+        assert result.scalar() == 1
+
     logger.info("Base de datos conectada exitosamente")
 except Exception as e:
     logger.error(f"Error al conectar con la base de datos: {e}")
@@ -31,4 +36,4 @@ Base = declarative_base()
 #        columns = self.__table__.columns.keys()
 #        values = {column: getattr(self, column) for column in columns}
 #        values_str = ', '.join(f"{column}={value!r}" for column, value in values.items())
-#        return f"<{self.__class__.__name__}({values_str})>"
+#        return f"<{self.__class__.__name__}({values_str})>"s
