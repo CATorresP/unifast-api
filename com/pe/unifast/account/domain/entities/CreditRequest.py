@@ -1,17 +1,18 @@
 from config.database import Base
-from sqlalchemy import ForeignKey, String, DateTime, Boolean
+from sqlalchemy import ForeignKey, String, DateTime, Boolean, Integer
 from sqlalchemy.dialects.mssql import MONEY, DATETIME
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from com.pe.unifast.account.domain.entities.Account import Account
 
 
-class Credit(Base):
-    __tablename__ = 'Credit'
-    creditID: Mapped[int] = mapped_column(primary_key=True)
-    ownedCredit: Mapped[MONEY] = mapped_column(MONEY)
-    preApprovedRequest: Mapped[bool] = mapped_column(Boolean)
-    prevInstallmentOverdue: Mapped[bool] = mapped_column(Boolean)
-    creditEligibility: Mapped[bool] = mapped_column(Boolean)
+class CreditRequest(Base):
+    __tablename__ = 'CreditRequest'
+    creditRequestID: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    creditID : Mapped[int] = mapped_column(ForeignKey("Credit.creditID"))
+    requestDate: Mapped[DateTime] = mapped_column(DATETIME)
+    paymentType: Mapped[str] = mapped_column(String(10))
+    requestStatus: Mapped[str] = mapped_column(String(10))
 
-    account: Mapped["Account"] = relationship("Account", back_populates="credit")
+    installments: Mapped[list["LoanInstallment"]] = relationship("LoanInstallment", back_populates="creditRequest")
+    credit: Mapped["Credit"] = relationship("Credit", back_populates="creditRequests")
 
+    

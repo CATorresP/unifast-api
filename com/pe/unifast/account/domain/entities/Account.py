@@ -1,9 +1,7 @@
 from config.database import Base
-from sqlalchemy import String, DateTime, ForeignKey
+from sqlalchemy import String, DateTime ,ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mssql import MONEY
-from com.pe.unifast.account.domain.entities.Credit import Credit
-
 
 class Account(Base):
     __tablename__ = 'Account'
@@ -23,7 +21,8 @@ class Account(Base):
     registerDatetime: Mapped[DateTime] = mapped_column(DateTime)
     accountStatus: Mapped[str] = mapped_column(String(10))
 
-    credit: Mapped[Credit] = relationship(back_populates="account")
-    # transaction: Mapped["Transaction"] = relationship(back_populates='account')
-    # transactionSubject: Mapped["Transaction"] = relationship(back_populates='account')
-
+    credit: Mapped["Credit"] = relationship(back_populates="account")
+    
+    transaction: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="account")
+    
+    transactionSubject: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="transactionSubject")

@@ -19,7 +19,7 @@ class AccountResponseDto(BaseModel):
     dailyReceptionLimit: float
     registerDatetime: datetime
     accountStatus: str
-    # credit: CreditResponseDto
+    credit: CreditResponseDto
 
     class Config:
         #orm_mode = True

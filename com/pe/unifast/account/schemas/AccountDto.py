@@ -1,10 +1,8 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-from com.pe.unifast.account.schemas import CreditDto
-
-
 class AccountDto(BaseModel):
+    accountID: int
     creditID: int
     name: str
     email: str
@@ -18,4 +16,3 @@ class AccountDto(BaseModel):
     dailyReceptionLimit: float
     registerDatetime: datetime
     accountStatus: str
-    #credit: CreditDto

@@ -21,5 +21,5 @@ app.include_router(auth_router, prefix="/auth")
 async def root():
     return {"message": "Hello World"}
 
-
+import create_tables
 

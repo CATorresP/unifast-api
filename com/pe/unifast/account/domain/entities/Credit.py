@@ -1,5 +1,4 @@
 from sqlalchemy import Boolean
-
 from config.database import Base
 from sqlalchemy.dialects.mssql import MONEY
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -14,5 +13,6 @@ class Credit(Base):
     prevInstallmentOverdue: Mapped[bool] = mapped_column(Boolean)
     creditEligibility: Mapped[bool] = mapped_column(Boolean)
 
+    creditRequests: Mapped[list["CreditRequest"]] = relationship( back_populates="credit")
     account: Mapped["Account"] = relationship(back_populates="credit")
 
