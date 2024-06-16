@@ -1,9 +1,24 @@
 from fastapi import FastAPI
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends
+
+#cors midleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
@@ -21,7 +36,7 @@ from com.pe.unifast.account.routers.CreditRequestRouter import creditRequestRout
 app.include_router(account_router, prefix="/api/v1/account", tags=["account"])
 app.include_router(loanInstallmentRouter, prefix="/api/v1/account", tags=["account"])
 app.include_router(transactionRouter, prefix="/api/v1/account", tags=["account"])
-app.include_router(creditRouter, prefix="/api/v1/account", tags=["account","credit"])
+app.include_router(creditRouter, prefix="/api/v1/account", tags=["account"])
 app.include_router(creditRequestRouter, prefix="/api/v1/account", tags=["account"])
 
 #domain order

@@ -26,6 +26,8 @@ from com.pe.unifast.store.domain.entities.Sale import Sale
 
 
 
+dev = False
 
-Base.metadata.create_all(bind=engine)
-print("Tables created")
+#create tables on change
+if dev == True:
+    Base.metadata.create_all(bind=engine)
