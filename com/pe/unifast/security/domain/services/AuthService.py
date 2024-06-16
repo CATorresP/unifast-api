@@ -65,7 +65,7 @@ class AuthService:
         self.account_repository = AccountRepository(db)
 
     def get_token(self, username, password) -> TokenResponseDto:
-        account = self.account_repository.find_active_by_phone_number(username)
+        account : Account = self.account_repository.find_active_by_phone_number(username) 
         if account is not None:
             if AuthService.HashManager.verify_password(password, account.hashedPin):
                 token = self.TokenManager.encode(account)
@@ -87,3 +87,5 @@ class AuthService:
                 headers={"WWW-Authenticate": "Bearer"},
             )
         return token_data
+    
+    

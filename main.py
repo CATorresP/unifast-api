@@ -5,24 +5,24 @@ from fastapi.security import OAuth2PasswordBearer
 
 app = FastAPI()
 
-from com.pe.unifast.security.routers.auth_router import auth_router
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 #domain security
-from com.pe.unifast.account.routers.AccountRouter import account_router
+from com.pe.unifast.security.routers.auth_router import auth_router
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
-#domain account
 
+#domain account
+from com.pe.unifast.account.routers.AccountRouter import account_router
 from com.pe.unifast.account.routers.LoanInstallmentRouter import loanInstallmentRouter
 from com.pe.unifast.account.routers.TransactionRouter import transactionRouter
 from com.pe.unifast.account.routers.CreditRouter import creditRouter
-from com.pe.unifast.account.routers.TransactionRouter import transactionRouter
+from com.pe.unifast.account.routers.CreditRequestRouter import creditRequestRouter
 
 app.include_router(account_router, prefix="/api/v1/account", tags=["account"])
 app.include_router(loanInstallmentRouter, prefix="/api/v1/account", tags=["account"])
 app.include_router(transactionRouter, prefix="/api/v1/account", tags=["account"])
-app.include_router(creditRouter, prefix="/api/v1/account", tags=["account"])
-app.include_router(transactionRouter, prefix="/api/v1/account", tags=["account"])
+app.include_router(creditRouter, prefix="/api/v1/account", tags=["account","credit"])
+app.include_router(creditRequestRouter, prefix="/api/v1/account", tags=["account"])
 
 #domain order
 
