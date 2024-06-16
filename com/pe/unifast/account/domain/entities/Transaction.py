@@ -17,8 +17,8 @@ class Transaction(Base):
     message: Mapped[str] = mapped_column(String(256))
     eBill: Mapped[XML] = mapped_column(XML)
 
-    account: Mapped["Account"] = relationship("Account", back_populates="transaction")
+    account: Mapped["Account"] = relationship("Account", back_populates="transaction",foreign_keys="[Transaction.accountID]")
     
-    subjectAccount : Mapped["Account"] = relationship("Account", back_populates="transactionSubject")
+    subjectAccount : Mapped["Account"] = relationship("Account", back_populates="transactionSubject",foreign_keys="[Transaction.subjectAccountID]")
     
-    supplier: Mapped["Supplier"] = relationship("Supplier", back_populates="transaction")
+    supplier: Mapped["Supplier"] = relationship("Supplier", back_populates="transactions",)

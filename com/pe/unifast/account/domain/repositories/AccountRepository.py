@@ -12,7 +12,8 @@ class AccountRepository:
 
     #get by id
     def find_by_id(self, account_id: int):
-        return self.db.get(Account, account_id)
+        stmt = select(Account).filter(Account.accountID == account_id)
+        return self.db.execute(stmt).scalar_one_or_none()
     
     #get all
     def get_all(self):

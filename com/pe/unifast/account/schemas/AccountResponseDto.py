@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-from com.pe.unifast.account.schemas.CreditResponseDto import CreditResponseDto
+
 
 
 class AccountResponseDto(BaseModel):
@@ -19,7 +19,6 @@ class AccountResponseDto(BaseModel):
     dailyReceptionLimit: float
     registerDatetime: datetime
     accountStatus: str
-    credit: CreditResponseDto
 
     class Config:
         #orm_mode = True

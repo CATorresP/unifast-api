@@ -1,5 +1,5 @@
 from config.database import Base
-from sqlalchemy import String, DateTime ,ForeignKey, Integer
+from sqlalchemy import String, DateTime ,ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mssql import MONEY
 
@@ -23,6 +23,7 @@ class Account(Base):
 
     credit: Mapped["Credit"] = relationship(back_populates="account")
     
-    transaction: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="account")
+    transaction: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="account",foreign_keys="[Transaction.accountID]")
     
-    transactionSubject: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="transactionSubject")
+    transactionSubject: Mapped[list["Transaction"]] = relationship("Transaction", back_populates="subjectAccount",foreign_keys="[Transaction.subjectAccountID]")
+    orders : Mapped[list["Order"]] = relationship("Order", back_populates="account")

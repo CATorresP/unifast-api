@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class ProductDTO(BaseModel):
+class ProductResponseDTO(BaseModel):
     productID: int
     brandID: int
     supplierID: int

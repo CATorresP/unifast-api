@@ -1,7 +1,6 @@
 from typing import Optional
 
 from sqlalchemy import select, update, delete, insert,join
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.orm import Session
 from com.pe.unifast.account.domain.entities.Credit import Credit
 

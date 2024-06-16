@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 from config.database import logger
 from dependencies import get_db_session
 
+from ..schemas.SupplierDTO import SupplierDTO
+from ..schemas.SupplierResponseDTO import SupplierResponseDTO
 
-from ..schemas.CreditRequestResponseDto import CreditRequesResponseDTO
-from ..schemas.CreditRequestDto import CreditRequestDTO
 
-creditRouter = APIRouter()
-creditRouter.prefix = "/creditRouter"
+
+supplierRouter = APIRouter()
+supplierRouter.prefix = "/sale"

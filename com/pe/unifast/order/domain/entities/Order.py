@@ -15,7 +15,7 @@ class Order(Base):
     orderStatus: Mapped[str] = mapped_column(String(10))
 
     
-    account: Mapped["Account"] = relationship("Account", back_populates="order")
+    account: Mapped["Account"] = relationship("Account", back_populates="orders")
     addressDetail: Mapped["AddressDetail"] = relationship("AddressDetail", back_populates="order")
     delivery: Mapped["Delivery"] = relationship("Delivery", back_populates="order")
 
