@@ -11,7 +11,7 @@ from dependencies import get_db_session
 auth_router = APIRouter()
 
 @auth_router.get("/")
-async def root():
+async def root():   
     return {"message": "HELLO FROM AUTH"}
 @auth_router.post("/token/")
 async def login(
