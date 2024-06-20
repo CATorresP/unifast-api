@@ -8,12 +8,17 @@ from ..schemas.SaleDTO import SaleDTO
 from ..schemas.SaleResponseDTO import SaleResponseDTO
 from ..domain.services.SaleService import SaleService
 
+from com.pe.unifast.security.domain.services.AuthService import AuthService
+from config.oauth2 import oauth2_scheme
+
 
 saleRouter = APIRouter()
 saleRouter.prefix = "/sale"
 
 @saleRouter.get("/{sale_id}")
-def get_sale_by_id(sale_id:int, db: Annotated[Session, Depends(get_db_session)])->SaleResponseDTO:
+def get_sale_by_id(sale_id:int, db: Annotated[Session, Depends(get_db_session)],token : Annotated[str,Depends(oauth2_scheme)])->SaleResponseDTO:    
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
     service = SaleService(db)
     sale = service.get_sale_by_id(sale_id)
     return sale

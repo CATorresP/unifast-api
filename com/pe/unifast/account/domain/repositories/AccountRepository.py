@@ -61,5 +61,6 @@ class AccountRepository:
         return self.db.execute(stmt).scalar_one_or_none()
     #find by phone number
     def find_by_phone_number(self, phone_number: str):
-        stmt = select(Account).filter(Account.phoneNumber == phone_number)
+        stmt = select(Account).filter(Account.phoneNumber == phone_number, Account.status == 'ACTIVE')
         return self.db.execute(stmt).scalar_one_or_none()
+    

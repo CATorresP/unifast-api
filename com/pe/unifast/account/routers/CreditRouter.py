@@ -3,41 +3,52 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from config.database import logger
 from dependencies import get_db_session
+from ...security.domain.services.AuthService import AuthService
+from config.oauth2 import oauth2_scheme
 
-
-from ..schemas.CreditRequestResponseDto import CreditRequesResponseDTO
-from ..schemas.CreditRequestDto import CreditRequestDTO
-from ..domain.services.CreditRequestService import CreditRequestService
+from ..schemas.CreditDto import CreditDto
+from ..schemas.CreditResponseDto import CreditResponseDto
+from ..domain.services.CreditService import CreditService
 
 creditRouter = APIRouter()
-creditRouter.prefix = "/creditRouter"
+creditRouter.prefix = "/credit"
 
-@creditRouter.get("/creditRequest/{creditRequestId}",response_model=CreditRequesResponseDTO)
-async def get_credit_request_by_id(db: Annotated[Session, Depends(get_db_session)], creditRequestId: int):
-    creditRequestService = CreditRequestService(db)
-    credit_request_response_dto = creditRequestService.get_credit_request_by_id(creditRequestId)
+@creditRouter.get("/credit/{creditID}",response_model=CreditResponseDto)
+async def get_credit_by_id(db: Annotated[Session, Depends(get_db_session)], creditID: int, token: Annotated[str, Depends(oauth2_scheme)]): 
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
+    creditService = CreditService(db)
+    credit_response_dto = creditService.get_credit_by_id(creditID)
+    return credit_response_dto
+
+@creditRouter.get("/credit",response_model=list[CreditResponseDto])
+async def get_all_credit(db: Annotated[Session, Depends(get_db_session)], token: Annotated[str, Depends(oauth2_scheme)]):
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
+    creditService = CreditService(db)
+    credit_response_dto = creditService.get_all_credit()
+    return credit_response_dto
+
+@creditRouter.put("/credit/{creditID}",response_model=CreditResponseDto)
+async def update_credit_request_by_id(db: Annotated[Session, Depends(get_db_session)], creditID: int, creditDTO: CreditDto, token: Annotated[str, Depends(oauth2_scheme)]):
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
+    creditService = CreditService(db)
+    credit_request_response_dto = creditService.update_credit_by_id(creditID, creditDTO)
     return credit_request_response_dto
 
-@creditRouter.get("/creditRequests",response_model=list[CreditRequesResponseDTO])
-async def get_all_credit_request(db: Annotated[Session, Depends(get_db_session)]):
-    creditRequestService = CreditRequestService(db)
-    credit_request_response_dto = creditRequestService.get_all_credit_request()
-    return credit_request_response_dto
-
-@creditRouter.put("/creditRequest/{creditRequestId}",response_model=CreditRequesResponseDTO)
-async def update_credit_request_by_id(db: Annotated[Session, Depends(get_db_session)], creditRequestId: int, creditRequestDTO: CreditRequestDTO):
-    creditRequestService = CreditRequestService(db)
-    credit_request_response_dto = creditRequestService.update_credit_request_by_id(creditRequestId, creditRequestDTO)
-    return credit_request_response_dto
-
-@creditRouter.delete("/creditRequest/{creditRequestId}")
-async def delete_credit_request_by_id(db: Annotated[Session, Depends(get_db_session)], creditRequestId: int):
-    creditRequestService = CreditRequestService(db)
-    creditRequestService.delete_credit_request_by_id(creditRequestId)
+@creditRouter.delete("/credit/{creditID}")
+async def delete_credit_request_by_id(db: Annotated[Session, Depends(get_db_session)], creditID: int, token: Annotated[str, Depends(oauth2_scheme)]):
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
+    creditService = CreditService(db)
+    creditService.delete_credit_by_id(creditID)
     return
 
-@creditRouter.post("/creditRequest",response_model=CreditRequesResponseDTO)
-async def create_credit_request(db: Annotated[Session, Depends(get_db_session)], creditRequestDTO: CreditRequestDTO):
-    creditRequestService = CreditRequestService(db)
-    credit_request_response_dto = creditRequestService.create_credit_request(creditRequestDTO)
+@creditRouter.post("/credit",response_model=CreditResponseDto)
+async def create_credit_request(db: Annotated[Session, Depends(get_db_session)], creditRequestDTO: CreditDto, token: Annotated[str, Depends(oauth2_scheme)]):
+    verify=AuthService(db).TokenManager.decode(token)
+    logger.info(verify)
+    creditService = CreditService(db)
+    credit_request_response_dto = creditService.create_credit(creditRequestDTO)
     return credit_request_response_dto

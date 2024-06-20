@@ -26,7 +26,7 @@ from com.pe.unifast.store.domain.entities.Sale import Sale
 
 
 
-dev = False
+dev = True
 
 #create tables on change
 if dev == True:

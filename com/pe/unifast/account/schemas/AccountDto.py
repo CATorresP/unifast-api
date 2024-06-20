@@ -16,3 +16,4 @@ class AccountDto(BaseModel):
     dailyReceptionLimit: float
     registerDatetime: datetime
     accountStatus: str
+    

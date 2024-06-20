@@ -14,6 +14,8 @@ from datetime import datetime, timedelta, timezone
 from com.pe.unifast.security.schemas.TokenResponseDto import TokenResponseDto
 
 
+
+
 class AuthService:
     class HashManager:
         @classmethod
@@ -65,7 +67,7 @@ class AuthService:
         self.account_repository = AccountRepository(db)
 
     def get_token(self, username, password) -> TokenResponseDto:
-        account : Account = self.account_repository.find_active_by_phone_number(username) 
+        account : Account = self.account_repository.find_by_phone_number(username)
         if account is not None:
             if AuthService.HashManager.verify_password(password, account.hashedPin):
                 token = self.TokenManager.encode(account)

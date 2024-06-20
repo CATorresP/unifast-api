@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app01:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      -  bridge
+    depends_on:
+      - db01
+
+  db01:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      SA_PASSWORD: "myBANKadmin#y4p3"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - bridge
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+volumes:
+  sqlserverdata:
+    external: true
+  
+networks:
+  bridge:
+    driver: bridge
