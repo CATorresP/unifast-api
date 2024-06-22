@@ -32,10 +32,22 @@ class AccountRepository:
         return
     #create account
     def create_account(self, account:Account):
-        stmt = insert(Account).values(account)
-        self.db.execute(stmt)
+        stmt = insert(Account).values(
+            name = account.name,
+            email = account.email,
+            phoneNumber = account.phoneNumber,
+            dni = account.dni,
+            hashedPin = account.hashedPin,
+            debitCardAuthToken = account.debitCardAuthToken,
+            creditID = account.creditID,
+        )
+        result=self.db.execute(stmt)
         self.db.commit()
-        return account
+
+        accountID = result.inserted_primary_key[0]
+
+
+        return self.find_by_id(accountID)
     
     #find credit by account id
     def find_credit_by_account_id(self, account_id: int):
@@ -61,6 +73,6 @@ class AccountRepository:
         return self.db.execute(stmt).scalar_one_or_none()
     #find by phone number
     def find_by_phone_number(self, phone_number: str):
-        stmt = select(Account).filter(Account.phoneNumber == phone_number, Account.status == 'ACTIVE')
+        stmt = select(Account).filter(Account.phoneNumber == phone_number, Account.accountStatus == 'ACTIVE')
         return self.db.execute(stmt).scalar_one_or_none()
     

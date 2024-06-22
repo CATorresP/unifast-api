@@ -11,13 +11,16 @@ R= TypeVar('R', bound=BaseModel)
 class Mapper:
     #dto to entity
     def dto_to_entity(self,dto: T,entity_class:Type[E]) -> E:
-        return entity_class(**dto)
+        entity_attrs = {attr for attr in dir(entity_class) if not attr.startswith('_') and not callable(getattr(entity_class, attr))}
+        dto_dict = {k: v for k, v in (dto.dict() if hasattr(dto, 'dict') else dto).items() if k in entity_attrs}
+        return entity_class(**dto_dict)
     #entity to dto
     def entity_to_dto(self,entity: E,dto_class:Type[T]) -> T:
         return dto_class(**entity)
     #entity to response dto
     def entity_to_response_dto(self,entity: E,response_dto_class:Type[R]) -> R:
-        return response_dto_class(**entity)
+        entity_dict = {key: value for key, value in entity.__dict__.items() if not key.startswith('_')}
+        return response_dto_class(**entity_dict)
     #list of entities to list of dtos
     def list_entity_to_list_dto(self,entities: list[E],dto_class:Type[T]) -> list[T]:
         return [dto_class(**entity) for entity in entities]

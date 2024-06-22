@@ -66,15 +66,15 @@ class AuthService:
     def __init__(self, db: Session):
         self.account_repository = AccountRepository(db)
 
-    def get_token(self, username, password) -> TokenResponseDto:
-        account : Account = self.account_repository.find_by_phone_number(username)
+    def get_token(self, phone_number, password) -> TokenResponseDto:
+        account : Account = self.account_repository.find_by_phone_number(phone_number)
         if account is not None:
             if AuthService.HashManager.verify_password(password, account.hashedPin):
                 token = self.TokenManager.encode(account)
                 return TokenResponseDto(access_token=token, token_type="bearer")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect phone_number or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

@@ -2,6 +2,7 @@ from config.database import Base
 from sqlalchemy import String, DateTime ,ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mssql import MONEY
+from datetime import datetime
 
 class Account(Base):
     __tablename__ = 'Account'
@@ -11,15 +12,15 @@ class Account(Base):
     name: Mapped[str] = mapped_column(String(35))
     email: Mapped[str] = mapped_column(String(64))
     phoneNumber: Mapped[str] = mapped_column(String(9))
-    profileImgPath: Mapped[str] = mapped_column(String(256))
-    accountType: Mapped[str] = mapped_column(String(20))
+    profileImgPath: Mapped[str] = mapped_column(String(256),default="")
+    accountType: Mapped[str] = mapped_column(String(20),default="Personal")
     dni: Mapped[str] = mapped_column(String(8))
     hashedPin: Mapped[str] = mapped_column(String(600))
     debitCardAuthToken: Mapped[str] = mapped_column(String(600))
-    dailyTransferLimit: Mapped[MONEY] = mapped_column(MONEY)
-    dailyReceptionLimit: Mapped[MONEY] = mapped_column(MONEY)
-    registerDatetime: Mapped[DateTime] = mapped_column(DateTime)
-    accountStatus: Mapped[str] = mapped_column(String(10))
+    dailyTransferLimit: Mapped[MONEY] = mapped_column(MONEY,default=5000.00)
+    dailyReceptionLimit: Mapped[MONEY] = mapped_column(MONEY,default=5000.00)
+    registerDatetime: Mapped[DateTime] = mapped_column(DateTime,default=datetime.now())
+    accountStatus: Mapped[str] = mapped_column(String(10),default="Active")
 
     credit: Mapped["Credit"] = relationship(back_populates="account")
     

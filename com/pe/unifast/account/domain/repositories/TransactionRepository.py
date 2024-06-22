@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy import select, update, delete, insert,join
 from sqlalchemy.orm import Session
 from com.pe.unifast.account.domain.entities.Transaction import Transaction
+from com.pe.unifast.account.schemas.TransactionDto import TransactionDto
 
 
 class TransactionRepository:
@@ -28,10 +29,23 @@ class TransactionRepository:
         self.db.commit()
         return
     
-    def create_transaction(self, transaction:Transaction):
-        stmt = insert(Transaction).values(transaction)
-        self.db.execute(stmt)
+    def create_transaction(self, 
+        amount,
+        message,
+        transactionType,
+        eBill,
+        eBillSign,
+        account_id,
+        subject_account_id):
+        stmt = insert(Transaction).values(amount=amount,
+                                        message=message,
+                                        transactionType=transactionType,
+                                        eBill=eBill.encode('utf-8'),
+                                        eBillSign=eBillSign.encode('utf-8'),
+                                        accountID=account_id,
+                                        subjectAccountID=subject_account_id)
+        result=self.db.execute(stmt)
         self.db.commit()
-        return transaction
+        return self.get_transaction_by_id(result.inserted_primary_key[0])
 
     

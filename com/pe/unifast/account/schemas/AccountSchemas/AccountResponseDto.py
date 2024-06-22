@@ -4,16 +4,17 @@ from datetime import datetime
 
 
 
+
 class AccountResponseDto(BaseModel):
-    accountID: int
-    creditID: int
     name: str
     email: str
     phoneNumber: str
-    profileImgPath: str
-    accountType: str
     dni: str
     hashedPin: str
+    accountID: int
+    creditID: int
+    profileImgPath: str
+    accountType: str
     debitCardAuthToken: str
     dailyTransferLimit: float
     dailyReceptionLimit: float

@@ -9,3 +9,5 @@ class LoanInstallmentDto(BaseModel):
     limitDate: datetime
     installmentStatus: str
     
+    class Config:
+        from_attributes = True

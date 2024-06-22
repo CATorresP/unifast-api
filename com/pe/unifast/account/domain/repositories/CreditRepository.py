@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy import select, update, delete, insert,join
 from sqlalchemy.orm import Session
 from com.pe.unifast.account.domain.entities.Credit import Credit
+from ...schemas.CreditSchemas.CreditDto import CreditDto
 
 
 class CreditRepository:
@@ -17,7 +18,7 @@ class CreditRepository:
         stmt = select(Credit).filter(Credit.creditID == credit_id)
         return self.db.execute(stmt).scalar_one()
     #updet credit
-    def update_credit_by_id(self, creditID:int, credit:Credit):
+    def update_credit_by_id(self, creditID:int, credit:CreditDto):
         stmt = update(Credit).where(Credit.creditID == creditID).values(credit)
         self.db.execute(stmt)
         self.db.commit()
@@ -29,11 +30,13 @@ class CreditRepository:
         self.db.commit()
         return 
     #create credit
-    def create_credit(self, credit:Credit):
-        stmt = insert(Credit).values(credit)
-        self.db.execute(stmt)
+    def create_credit(self):
+        
+        stmt = insert(Credit).values()
+        result  = self.db.execute(stmt)
         self.db.commit()
-        return credit
+        creditID = result.inserted_primary_key[0]
+        return self.find_by_id(creditID)
     
     #get by account id
     def find_by_account_id(self, account_id: int):

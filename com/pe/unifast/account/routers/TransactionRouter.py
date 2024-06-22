@@ -49,9 +49,9 @@ async def delete_transaction_by_id(db: Annotated[Session, Depends(get_db_session
 
 @transactionRouter.post("/transaction",response_model=TransactionResponseDto)
 async def create_transaction(db: Annotated[Session, Depends(get_db_session)], transactionDto: TransactionDto, token: Annotated[str, Depends(oauth2_scheme)]):
-    verify=AuthService(db).TokenManager.decode(token)
-    logger.info(verify)
-                             
+    authService = AuthService(db)
     transactionService = TransactionService(db)
-    transaction_response_dto = transactionService.create_transaction(transactionDto)
+    token_data  = authService.get_token_data(token)
+
+    transaction_response_dto = transactionService.create_transaction( transactionDto,token_data.accountID)
     return transaction_response_dto

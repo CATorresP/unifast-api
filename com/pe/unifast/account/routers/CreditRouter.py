@@ -6,8 +6,8 @@ from dependencies import get_db_session
 from ...security.domain.services.AuthService import AuthService
 from config.oauth2 import oauth2_scheme
 
-from ..schemas.CreditDto import CreditDto
-from ..schemas.CreditResponseDto import CreditResponseDto
+from ..schemas.CreditSchemas.CreditDto import CreditDto
+from ..schemas.CreditSchemas.CreditResponseDto import CreditResponseDto
 from ..domain.services.CreditService import CreditService
 
 creditRouter = APIRouter()

@@ -8,6 +8,8 @@ class CreditRequestDTO(BaseModel):
     paymentType : str
     requestStatus: str
     
+    class Config:
+        from_attributes = True
     
 
 
