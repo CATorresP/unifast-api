@@ -17,33 +17,37 @@ transactionRouter.prefix = "/transaction"
 
 @transactionRouter.get("/transaction/{transactionId}",response_model=TransactionResponseDto)
 async def get_transaction_by_id(db: Annotated[Session, Depends(get_db_session)], transactionId: int, token: Annotated[str, Depends(oauth2_scheme)]):
-    verify=AuthService(db).TokenManager.decode(token)
-    logger.info(verify)
+    authService = AuthService(db)
     transactionService = TransactionService(db)
+        
+    token_data  = authService.get_token_data(token) 
     transaction_response_dto = transactionService.get_transaction_by_id(transactionId)
     return transaction_response_dto
 
 @transactionRouter.get("/transactions",response_model=list[TransactionResponseDto])
 async def get_all_transaction(db: Annotated[Session, Depends(get_db_session)], token: Annotated[str, Depends(oauth2_scheme)]):
-    verify=AuthService(db).TokenManager.decode(token)
-    logger.info(verify)
+    authService = AuthService(db)
     transactionService = TransactionService(db)
+        
+    token_data  = authService.get_token_data(token) 
     transaction_response_dto = transactionService.get_all_transaction()
     return transaction_response_dto
 
 @transactionRouter.put("/transaction/{transactionId}",response_model=TransactionResponseDto)
 async def update_transaction_by_id(db: Annotated[Session, Depends(get_db_session)], transactionId: int, transactionDto: TransactionDto, token: Annotated[str, Depends(oauth2_scheme)]):
-    verify=AuthService(db).TokenManager.decode(token)
-    logger.info(verify)
+    authService = AuthService(db)
     transactionService = TransactionService(db)
+        
+    token_data  = authService.get_token_data(token) 
     transaction_response_dto = transactionService.update_transaction_by_id(transactionId, transactionDto)
     return transaction_response_dto
 
 @transactionRouter.delete("/transaction/{transactionId}")
 async def delete_transaction_by_id(db: Annotated[Session, Depends(get_db_session)], transactionId: int, token: Annotated[str, Depends(oauth2_scheme)]):
-    verify=AuthService(db).TokenManager.decode(token)
-    logger.info(verify)
+    authService = AuthService(db)
     transactionService = TransactionService(db)
+        
+    token_data  = authService.get_token_data(token) 
     transactionService.delete_transaction_by_id(transactionId)
     return
 
@@ -54,4 +58,13 @@ async def create_transaction(db: Annotated[Session, Depends(get_db_session)], tr
     token_data  = authService.get_token_data(token)
 
     transaction_response_dto = transactionService.create_transaction( transactionDto,token_data.accountID)
+    return transaction_response_dto
+
+@transactionRouter.get("/transactions/account",response_model=list[TransactionResponseDto])
+async def get_transaction_by_account(db: Annotated[Session, Depends(get_db_session)], token: Annotated[str, Depends(oauth2_scheme)]):
+    authService = AuthService(db)
+    transactionService = TransactionService(db)
+        
+    token_data  = authService.get_token_data(token) 
+    transaction_response_dto = transactionService.get_transaction_by_account(token_data.accountID)
     return transaction_response_dto

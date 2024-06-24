@@ -23,4 +23,4 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
 EXPOSE 5000
 
 
-CMD ["uvicorn", "main:app", "--host", "app01", "--port", "5000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]

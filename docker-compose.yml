@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:5000"
     networks:
-      -  bridge
+      -  unifast-network
     depends_on:
       - db01
 
@@ -18,7 +18,7 @@ services:
     ports:
       - "1433:1433"
     networks:
-      - bridge
+      - unifast-network
     volumes:
       - sqlserverdata:/var/opt/mssql
 
@@ -27,5 +27,5 @@ volumes:
     external: true
   
 networks:
-  bridge:
+  unifast-network:
     driver: bridge

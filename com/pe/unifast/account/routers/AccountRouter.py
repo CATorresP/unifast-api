@@ -58,3 +58,11 @@ async def create_account(db: Annotated[Session, Depends(get_db_session)], accoun
     accountService = AccountService(db)
     account_response_dto = accountService.create_account(accountDto)
     return account_response_dto
+
+@account_router.get("/account/{phoneNumber}",response_model=AccountResponseDto)
+async def get_account_by_phone_number(phoneNumber: str, db: Annotated[Session, Depends(get_db_session)], token: Annotated[str, Depends(oauth2_scheme)]):
+    authService = AuthService(db)
+    accountService = AccountService(db)
+    token_data  = authService.get_token_data(token)
+    account_response_dto = accountService.get_account_by_phone_number(phoneNumber)
+    return account_response_dto

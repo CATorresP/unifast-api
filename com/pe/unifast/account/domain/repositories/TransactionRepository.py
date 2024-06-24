@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, update, delete, insert,join
+from sqlalchemy import select, update, delete, insert,or_
 from sqlalchemy.orm import Session
 from com.pe.unifast.account.domain.entities.Transaction import Transaction
 from com.pe.unifast.account.schemas.TransactionDto import TransactionDto
@@ -47,5 +47,11 @@ class TransactionRepository:
         result=self.db.execute(stmt)
         self.db.commit()
         return self.get_transaction_by_id(result.inserted_primary_key[0])
+
+    def get_transaction_by_account_id(self, account_id:int):
+        stmt = select(Transaction).where(
+            or_(Transaction.accountID == account_id, Transaction.subjectAccountID == account_id)
+        )
+        return self.db.execute(stmt).scalars().all()
 
     

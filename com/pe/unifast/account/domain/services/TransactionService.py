@@ -186,6 +186,10 @@ class TransactionService:
 
 
         return  TransactionResponseDto(**transaction.__dict__)
+    
+    def get_transaction_by_account(self, account_id:int):
+        transactions = self.repository.get_transaction_by_account_id(account_id)
+        return [TransactionResponseDto(**transaction.__dict__) for transaction in transactions]
 
 
 
